@@ -19,6 +19,11 @@ def encrypt(message, key):
 
 ##Takes in an encrypted message and decrypts using Caesar Cyper using the shared key
 def decrypt(message, key):
-    pass
+    decryptMessage = ''
+    for i in range(len(message)):
+        charNum = ord(message[i])
+        decryptMessage += (chr(charNum - key))
+    return decryptMessage
 
 print(encrypt(secret, 5))
+print(decrypt(encrypt(secret, 5), 5))
