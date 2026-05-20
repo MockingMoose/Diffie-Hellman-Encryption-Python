@@ -3,13 +3,14 @@ import math
 import random 
 
 st.title("Diffie-Hellman Visualization")
-
-pubPrime = 17
+primesList = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+#Public Prime and Base
+pubPrime = random.choice(primesList)
 pubBase = 3
+
+#Private Keys
 sendKey = 4
-receiveKey = 15
-sendPub = generate_public_key(pubBase, pubPrime, sendKey)
-receivePub = generate_public_key(pubBase, pubPrime, receiveKey)
+receiveKey = 6
 
 ##Generates a public key 
 def generate_public_key(base, prime, secret):
@@ -36,5 +37,43 @@ def decrypt(message, key):
         decryptMessage += (chr(charNum - key))
     return decryptMessage
 
-print(generate_public_key(pubBase, pubPrime, sendKey))
-print(generate_shared_key(pubBase, pubPrime, receiveKey))
+
+#Public Keys
+sendPub = generate_public_key(pubBase, pubPrime, sendKey)
+receivePub = generate_public_key(pubBase, pubPrime, receiveKey)
+
+#Shared Keys
+sendShared = generate_shared_key(receivePub, pubPrime, sendKey)
+receiveShared = generate_shared_key(sendPub, pubPrime, receiveKey)
+
+
+
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.header("Sender A (Alice)")
+    st.write(f"Private Key: {sendKey}")
+    st.write(f"Calculated Public Key: {sendPub}")
+with col2:
+    st.header("The Public Space")
+    st.write(f"Shared Prime (p): {pubPrime}")
+    st.write(f"Shared Base (g): {pubBase}")
+with col3:
+    st.header("Receiver B (Bob)")
+    st.write(f"Private Key: {receiveKey}")
+    st.write(f"Calculated Public Key: {receivePub}")
+st.divider()
+
+message = st.text_input("Enter your message to be encrypted")
+secretMessage = encrypt(message, sendShared)
+st.divider()
+
+st.subheader("Intercepted Data on the Network")
+st.write("What the hacker sees:")
+st.write(f"Intercepted Message: {secretMessage}")
+st.write(f"Intercepted Public Keys: A={sendPub}, B= {receivePub}")
+st.error(f"Message decryption failed by Hacker: {decrypt(secretMessage, 3)}")
+st.divider()
+
+st.success(f"Decrypted successfully by Receiver B: {decrypt(secretMessage, receiveShared)}")
