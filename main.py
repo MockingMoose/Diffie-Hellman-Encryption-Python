@@ -65,8 +65,7 @@ with col3:
     st.write(f"Calculated Public Key: {receivePub}")
 st.divider()
 
-message = st.text_input("Enter your message to be encrypted")
-secretMessage = encrypt(message, sendShared)
+secretMessage = encrypt(st.text_input("Enter your message to be encrypted"), sendShared)
 st.divider()
 
 st.subheader("Intercepted Data on the Network")
