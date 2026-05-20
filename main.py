@@ -65,6 +65,7 @@ with col3:
     st.write(f"Calculated Public Key: {receivePub}")
 st.divider()
 
+st.subheader("Sender A sends a message encrypted with shared key")
 secretMessage = encrypt(st.text_input("Enter your message to be encrypted"), sendShared)
 st.divider()
 
@@ -72,7 +73,8 @@ st.subheader("Intercepted Data on the Network")
 st.write("What the hacker sees:")
 st.write(f"Intercepted Message: {secretMessage}")
 st.write(f"Intercepted Public Keys: A={sendPub}, B= {receivePub}")
-st.error(f"Message decryption failed by Hacker: {decrypt(secretMessage, 3)}")
+
 st.divider()
 
+st.subheader("Receiver B gets message and decrypts it using shared key")
 st.success(f"Decrypted successfully by Receiver B: {decrypt(secretMessage, receiveShared)}")
